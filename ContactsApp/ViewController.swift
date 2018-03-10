@@ -11,10 +11,10 @@ import UIKit
 class ViewController: UITableViewController {
     
     let cellId = "cellId"
-    let names = ["Amy","Bella","Carmella","Paul","Haris","Dave","Jack"]
-    let cNames = ["Carl","Cameron","Chris","Christina","Cathy"]
-    let twoDimentionalArray = [
-        ["Amy","Bella","Carmella","Paul","Haris","Dave","Jack"],["Carl","Cameron","Chris","Christina","Cathy"],["Dan","Daniel"]
+    var twoDimentionalArray = [
+        ExpandableNames(isExpanded: true, names: ["Amy","Bella","Carmella","Paul","Haris","Dave","Jack"]),
+        ExpandableNames(isExpanded: true, names: ["Carl","Cameron","Chris","Christina","Cathy"]),
+        ExpandableNames(isExpanded: true, names: ["Dan","Daniel"])
     ]
     var showIndexPath = false
     
@@ -23,7 +23,7 @@ class ViewController: UITableViewController {
         // build all the indexPath we want to reload
         var indexPathtoReload = [IndexPath]()
         for section in twoDimentionalArray.indices {
-            for row in twoDimentionalArray[section].indices{
+            for row in twoDimentionalArray[section].names.indices{
                 print(section,row)
                 let indexPath = IndexPath(row:row, section:section)
                 indexPathtoReload.append(indexPath)
@@ -46,10 +46,40 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let label = UILabel()
-        label.text = "Header"
-        label.backgroundColor = UIColor.orange
-        return label
+        let button = UIButton(type: .system)
+        button.setTitle("Close", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .orange
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(handleExpandClose), for: .touchUpInside)
+        button.tag = section
+        return button
+    }
+    
+    @objc func handleExpandClose(button: UIButton){
+    print("Trying to expand and Close Section...")
+        print(button.tag)
+        let section = button.tag
+        // Close the section by deleting rows in the table
+        var indexPaths = [IndexPath]()
+        for row in twoDimentionalArray[section].names.indices {
+            print(0,row)
+            let indexPath = IndexPath(row: row, section: section)
+            indexPaths.append(indexPath)
+        }
+        let isExpanded = twoDimentionalArray[section].isExpanded
+        twoDimentionalArray[section].isExpanded = !isExpanded
+        button.setTitle(isExpanded ? "Open": "Close", for: .normal)
+        
+        if isExpanded {
+            tableView.deleteRows(at: indexPaths, with: .fade)
+        }else {
+            tableView.insertRows(at: indexPaths, with: .fade)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 36
     }
     
    override func numberOfSections(in tableView: UITableView) -> Int {
@@ -58,18 +88,16 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return  twoDimentionalArray[section].count
-//        if section == 0 {
-//            return names.count
-//        }
-//        return cNames.count
+        if !twoDimentionalArray[section].isExpanded {
+            return 0
+        }
+        return  twoDimentionalArray[section].names.count
+
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-      //  let name = self.names[indexPath.row]
-//        let name = indexPath.section == 0 ? names[indexPath.row] : cNames[indexPath.row]
-        let name = twoDimentionalArray[indexPath.section][indexPath.row]
+        let name = twoDimentionalArray[indexPath.section].names[indexPath.row]
         cell.textLabel?.text = name
         if showIndexPath {
           cell.textLabel?.text = "\(name) Section:\(indexPath.section) Row:\(indexPath.row)"
