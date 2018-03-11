@@ -11,15 +11,29 @@ import UIKit
 class ViewController: UITableViewController {
     
     let cellId = "cellId"
+    func somemethod(cell: UITableViewCell) {
+      let indexPathTapped = tableView.indexPath(for: cell)
+      let contact = twoDimentionalArray[indexPathTapped!.section].names[indexPathTapped!.row]
+        print(contact)
+        
+        let hasFavorited = contact.hasFavorited
+        twoDimentionalArray[indexPathTapped!.section].names[indexPathTapped!.row].hasFavorited = !hasFavorited
+        
+     //   tableView.reloadRows(at: [indexPathTapped!], with: .fade)
+        
+        cell.accessoryView?.tintColor = hasFavorited ? .lightGray : .red
+    }
+    
     var twoDimentionalArray = [
-        ExpandableNames(isExpanded: true, names: ["Amy","Bella","Carmella","Paul","Haris","Dave","Jack"]),
-        ExpandableNames(isExpanded: true, names: ["Carl","Cameron","Chris","Christina","Cathy"]),
-        ExpandableNames(isExpanded: true, names: ["Dan","Daniel"])
+        ExpandableNames(isExpanded: true, names: ["Amy","Bella","Carmella","Paul","Haris","Dave","Jack"].map{Contact(name: $0,hasFavorited: false)}),
+        ExpandableNames(isExpanded: true, names: ["Carl","Cameron","Chris","Christina","Cathy"].map{Contact(name: $0,hasFavorited: false)}),
+        ExpandableNames(isExpanded: true, names: [ Contact(name: "Patrick", hasFavorited: false)])
     ]
     var showIndexPath = false
     
     @objc func handleShowIndexPath() {
-        print("Attempting to reload animation of indexPath...")
+       
+    //    print("Attempting to reload animation of indexPath...")
         // build all the indexPath we want to reload
         var indexPathtoReload = [IndexPath]()
         for section in twoDimentionalArray.indices {
@@ -43,6 +57,8 @@ class ViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellId)
         navigationItem.title = "Contacts"
         navigationController?.navigationBar.prefersLargeTitles = true
+        
+        tableView.register(ContactCell.self, forCellReuseIdentifier: cellId)
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -96,11 +112,13 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        let name = twoDimentionalArray[indexPath.section].names[indexPath.row]
-        cell.textLabel?.text = name
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ContactCell
+        cell.link = self
+        let contact = twoDimentionalArray[indexPath.section].names[indexPath.row]
+        cell.textLabel?.text = contact.name
+        cell.accessoryView?.tintColor = contact.hasFavorited ? UIColor.red: .lightGray
         if showIndexPath {
-          cell.textLabel?.text = "\(name) Section:\(indexPath.section) Row:\(indexPath.row)"
+          cell.textLabel?.text = "\(contact.name) Section:\(indexPath.section) Row:\(indexPath.row)"
         }
         return cell
     }

@@ -13,6 +13,7 @@
 		A5A2844C20539C0E002B5064 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5A2844B20539C0E002B5064 /* Assets.xcassets */; };
 		A5A2844F20539C0E002B5064 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5A2844D20539C0E002B5064 /* LaunchScreen.storyboard */; };
 		A5CB318520543F8E003347AB /* ExpandableNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CB318420543F8E003347AB /* ExpandableNames.swift */; };
+		A5F489A72054EB87007FF925 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F489A62054EB87007FF925 /* ContactCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		A5A2844E20539C0E002B5064 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A5A2845020539C0E002B5064 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5CB318420543F8E003347AB /* ExpandableNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableNames.swift; sourceTree = "<group>"; };
+		A5F489A62054EB87007FF925 /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				A5A2844D20539C0E002B5064 /* LaunchScreen.storyboard */,
 				A5A2845020539C0E002B5064 /* Info.plist */,
 				A5CB318420543F8E003347AB /* ExpandableNames.swift */,
+				A5F489A62054EB87007FF925 /* ContactCell.swift */,
 			);
 			path = ContactsApp;
 			sourceTree = "<group>";
@@ -139,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5F489A72054EB87007FF925 /* ContactCell.swift in Sources */,
 				A5CB318520543F8E003347AB /* ExpandableNames.swift in Sources */,
 				A5A2844720539C0E002B5064 /* ViewController.swift in Sources */,
 				A5A2844520539C0E002B5064 /* AppDelegate.swift in Sources */,
